@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 
-from app.api.dependencies import get_vehicle_service, require_admin
-from app.schemas.vehicle import VehicleCreate, VehicleListResponse, VehicleResponse, VehicleUpdate
+from app.api.dependencies import get_inventory_service, get_vehicle_service, require_admin, get_current_user
+from app.schemas.vehicle import RestockRequest, VehicleCreate, VehicleListResponse, VehicleResponse, VehicleUpdate
+from app.services.inventory_service import InventoryError, InventoryService
 from app.services.vehicle_service import VehicleError, VehicleService
 
 router = APIRouter(prefix="/api/vehicles", tags=["vehicles"])
@@ -54,4 +55,29 @@ async def update_vehicle(
         updates = body.model_dump(exclude_none=True)
         return await svc.update(vehicle_id, updates)
     except VehicleError as e:
+        raise HTTPException(status_code=e.status_code, detail=str(e))
+
+
+@router.post("/{vehicle_id}/purchase", response_model=VehicleResponse)
+async def purchase_vehicle(
+    vehicle_id: str,
+    svc: InventoryService = Depends(get_inventory_service),
+    _: object = Depends(get_current_user),
+):
+    try:
+        return await svc.purchase(vehicle_id)
+    except InventoryError as e:
+        raise HTTPException(status_code=e.status_code, detail=str(e))
+
+
+@router.post("/{vehicle_id}/restock", response_model=VehicleResponse)
+async def restock_vehicle(
+    vehicle_id: str,
+    body: RestockRequest,
+    svc: InventoryService = Depends(get_inventory_service),
+    _: object = Depends(require_admin),
+):
+    try:
+        return await svc.restock(vehicle_id, body.quantity)
+    except InventoryError as e:
         raise HTTPException(status_code=e.status_code, detail=str(e))

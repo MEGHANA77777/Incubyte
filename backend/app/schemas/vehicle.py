@@ -77,3 +77,14 @@ class VehicleListResponse(BaseModel):
     total: int
     page: int
     limit: int
+
+
+class RestockRequest(BaseModel):
+    quantity: int
+
+    @field_validator("quantity")
+    @classmethod
+    def quantity_positive(cls, v: int) -> int:
+        if v <= 0:
+            raise ValueError("quantity must be > 0")
+        return v

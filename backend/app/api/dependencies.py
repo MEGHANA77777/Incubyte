@@ -8,6 +8,7 @@ from app.repositories.user_repository import UserRepository
 from app.repositories.vehicle_repository import VehicleRepository
 from app.schemas.user import TokenData
 from app.services.auth_service import AuthService
+from app.services.inventory_service import InventoryService
 from app.services.vehicle_service import VehicleService
 
 _bearer = HTTPBearer(auto_error=False)
@@ -27,6 +28,10 @@ def get_vehicle_repository() -> VehicleRepository:
 
 def get_vehicle_service(repo: VehicleRepository = Depends(get_vehicle_repository)) -> VehicleService:
     return VehicleService(repo)
+
+
+def get_inventory_service(repo: VehicleRepository = Depends(get_vehicle_repository)) -> InventoryService:
+    return InventoryService(repo)
 
 
 def get_current_user(

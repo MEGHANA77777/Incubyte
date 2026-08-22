@@ -50,3 +50,39 @@ class VehicleRepository:
             return False
         result = await self._col.update_one({"_id": oid}, {"$set": updates})
         return result.matched_count > 0
+
+    async def purchase(self, vehicle_id: str) -> bool:
+        """Atomically decrement quantity by 1 only if quantity > 0.
+
+        Concurrency strategy: single find_one_and_update with a conditional
+        filter { _id: ..., quantity: { $gt: 0 } } and update { $inc: { quantity: -1 } }.
+        MongoDB executes this as an atomic operation — no read-modify-write race
+        condition is possible. If two requests arrive simultaneously for the last
+        unit, exactly one will match the filter; the other will find no document
+        and return None, which we surface as False (out of stock / not found).
+        """
+        try:
+            oid = ObjectId(vehicle_id)
+        except Exception:
+            return False
+        result = await self._col.find_one_and_update(
+            {"_id": oid, "quantity": {"$gt": 0}},
+            {"$inc": {"quantity": -1}},
+        )
+        return result is not None
+
+    async def restock(self, vehicle_id: str, quantity: int) -> bool:
+        """Atomically increment quantity by the given amount.
+
+        Uses $inc so concurrent restock calls compose correctly without
+        overwriting each other's changes.
+        """
+        try:
+            oid = ObjectId(vehicle_id)
+        except Exception:
+            return False
+        result = await self._col.update_one(
+            {"_id": oid},
+            {"$inc": {"quantity": quantity}},
+        )
+        return result.matched_count > 0
