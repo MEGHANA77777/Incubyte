@@ -72,6 +72,14 @@ class VehicleService:
         }
         items = await self._repo.search(filters)
         return [_serialize(v) for v in items]
+    
+    async def delete(self, vehicle_id: str) -> bool:
+        deleted = await self._repo.delete(vehicle_id)
+
+        if not deleted:
+            raise VehicleError("Vehicle not found", 404)
+
+        return True
 
     async def update(self, vehicle_id: str, updates: dict) -> dict:
         # Disallow immutable fields

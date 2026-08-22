@@ -57,6 +57,23 @@ async def update_vehicle(
     except VehicleError as e:
         raise HTTPException(status_code=e.status_code, detail=str(e))
 
+@router.delete(
+    "/{vehicle_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+async def delete_vehicle(
+    vehicle_id: str,
+    svc: VehicleService = Depends(get_vehicle_service),
+    _: object = Depends(require_admin),
+):
+    try:
+        await svc.delete(vehicle_id)
+    except VehicleError as e:
+        raise HTTPException(
+            status_code=e.status_code,
+            detail=str(e),
+        ) from e
+
 
 @router.post("/{vehicle_id}/purchase", response_model=VehicleResponse)
 async def purchase_vehicle(

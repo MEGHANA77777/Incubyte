@@ -71,51 +71,13 @@ class VehicleRepository:
         )
         return result is not None
 
-    async def delete(self, vehicle_id: str) -> bool:
-        try:
-            oid = ObjectId(vehicle_id)
-        except Exception:
-            return False
-        result = await self._col.delete_one({"_id": oid})
-        return result.deleted_count > 0
 
     async def delete(self, vehicle_id: str) -> bool:
         try:
             oid = ObjectId(vehicle_id)
         except Exception:
             return False
-        result = await self._col.delete_one({"_id": oid})
-        return result.deleted_count > 0
 
-    async def delete(self, vehicle_id: str) -> bool:
-        try:
-            oid = ObjectId(vehicle_id)
-        except Exception:
-            return False
-        result = await self._col.delete_one({"_id": oid})
-        return result.deleted_count > 0
-
-    async def delete(self, vehicle_id: str) -> bool:
-        try:
-            oid = ObjectId(vehicle_id)
-        except Exception:
-            return False
-        result = await self._col.delete_one({"_id": oid})
-        return result.deleted_count > 0
-
-    async def delete(self, vehicle_id: str) -> bool:
-        try:
-            oid = ObjectId(vehicle_id)
-        except Exception:
-            return False
-        result = await self._col.delete_one({"_id": oid})
-        return result.deleted_count > 0
-
-    async def delete(self, vehicle_id: str) -> bool:
-        try:
-            oid = ObjectId(vehicle_id)
-        except Exception:
-            return False
         result = await self._col.delete_one({"_id": oid})
         return result.deleted_count > 0
 
@@ -129,8 +91,11 @@ class VehicleRepository:
             oid = ObjectId(vehicle_id)
         except Exception:
             return False
+
         result = await self._col.update_one(
             {"_id": oid},
             {"$inc": {"quantity": quantity}},
         )
         return result.matched_count > 0
+
+

@@ -2,12 +2,14 @@ from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
 from fastapi import FastAPI
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes.auth import router as auth_router
 from app.api.routes.vehicles import router as vehicles_router
 from app.core.config import settings
 from app.core.database import close_client, get_client
+from app.core.exceptions import validation_exception_handler
 
 
 @asynccontextmanager
@@ -25,6 +27,12 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+)
+
+
+app.add_exception_handler(
+    RequestValidationError,
+    validation_exception_handler,
 )
 
 

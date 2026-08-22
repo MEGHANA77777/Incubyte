@@ -382,3 +382,64 @@ async def test_update_vehicle_non_admin_returns_403():
             headers={"Authorization": f"Bearer {_user_token()}"},
         )
     assert resp.status_code == 403
+
+
+# ===========================================================================
+# DELETE /api/vehicles/{id} — DELETE
+# ===========================================================================
+
+@pytest.mark.asyncio
+async def test_delete_vehicle_unauthenticated_returns_401():
+    repo = _make_vehicle_repo()
+
+    async with _make_client(repo) as c:
+        resp = await c.delete(
+            "/api/vehicles/64b1f1f1f1f1f1f1f1f1f1f1"
+        )
+
+    assert resp.status_code == 401
+
+
+@pytest.mark.asyncio
+async def test_delete_vehicle_non_admin_returns_403():
+    repo = _make_vehicle_repo()
+
+    async with _make_client(repo) as c:
+        resp = await c.delete(
+            "/api/vehicles/64b1f1f1f1f1f1f1f1f1f1f1",
+            headers={"Authorization": f"Bearer {_user_token()}"},
+        )
+
+    assert resp.status_code == 403
+
+
+@pytest.mark.asyncio
+async def test_delete_vehicle_admin_returns_204():
+    repo = _make_vehicle_repo()
+    repo.delete = AsyncMock(return_value=True)
+
+    async with _make_client(repo) as c:
+        resp = await c.delete(
+            "/api/vehicles/64b1f1f1f1f1f1f1f1f1f1f1",
+            headers={"Authorization": f"Bearer {_admin_token()}"},
+        )
+
+    assert resp.status_code == 204
+    repo.delete.assert_awaited_once_with(
+        "64b1f1f1f1f1f1f1f1f1f1f1"
+    )
+    
+
+
+@pytest.mark.asyncio
+async def test_delete_vehicle_not_found_returns_404():
+    repo = _make_vehicle_repo()
+    repo.delete = AsyncMock(return_value=False)
+
+    async with _make_client(repo) as c:
+        resp = await c.delete(
+            "/api/vehicles/64b1f1f1f1f1f1f1f1f1f1f1",
+            headers={"Authorization": f"Bearer {_admin_token()}"},
+        )
+
+    assert resp.status_code == 404
