@@ -5,8 +5,10 @@ from app.core.database import get_database
 from app.core.security import InvalidTokenError, decode_access_token
 from app.models.user import UserRole
 from app.repositories.user_repository import UserRepository
+from app.repositories.vehicle_repository import VehicleRepository
 from app.schemas.user import TokenData
 from app.services.auth_service import AuthService
+from app.services.vehicle_service import VehicleService
 
 _bearer = HTTPBearer(auto_error=False)
 
@@ -17,6 +19,14 @@ def get_user_repository() -> UserRepository:
 
 def get_auth_service(repo: UserRepository = Depends(get_user_repository)) -> AuthService:
     return AuthService(repo)
+
+
+def get_vehicle_repository() -> VehicleRepository:
+    return VehicleRepository(get_database())
+
+
+def get_vehicle_service(repo: VehicleRepository = Depends(get_vehicle_repository)) -> VehicleService:
+    return VehicleService(repo)
 
 
 def get_current_user(

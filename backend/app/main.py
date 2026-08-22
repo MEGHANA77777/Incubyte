@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes.auth import router as auth_router
+from app.api.routes.vehicles import router as vehicles_router
 from app.core.config import settings
 from app.core.database import close_client, get_client
 
@@ -28,6 +29,7 @@ app.add_middleware(
 
 
 app.include_router(auth_router)
+app.include_router(vehicles_router)
 
 
 @app.get("/health")
