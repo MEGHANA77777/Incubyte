@@ -23,10 +23,6 @@ Raw AI conversation logs with Amazon Q Developer (CLI).
 ---
 
 ## Session 3 — Authentication & Security Foundation (Implementation)
-
-**Prompt**:
-## Stage 2 — Authentication & Security
-
 Implement the complete authentication and security foundation.
 
 * Implement user model and validation schemas.
