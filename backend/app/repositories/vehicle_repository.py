@@ -71,6 +71,54 @@ class VehicleRepository:
         )
         return result is not None
 
+    async def delete(self, vehicle_id: str) -> bool:
+        try:
+            oid = ObjectId(vehicle_id)
+        except Exception:
+            return False
+        result = await self._col.delete_one({"_id": oid})
+        return result.deleted_count > 0
+
+    async def delete(self, vehicle_id: str) -> bool:
+        try:
+            oid = ObjectId(vehicle_id)
+        except Exception:
+            return False
+        result = await self._col.delete_one({"_id": oid})
+        return result.deleted_count > 0
+
+    async def delete(self, vehicle_id: str) -> bool:
+        try:
+            oid = ObjectId(vehicle_id)
+        except Exception:
+            return False
+        result = await self._col.delete_one({"_id": oid})
+        return result.deleted_count > 0
+
+    async def delete(self, vehicle_id: str) -> bool:
+        try:
+            oid = ObjectId(vehicle_id)
+        except Exception:
+            return False
+        result = await self._col.delete_one({"_id": oid})
+        return result.deleted_count > 0
+
+    async def delete(self, vehicle_id: str) -> bool:
+        try:
+            oid = ObjectId(vehicle_id)
+        except Exception:
+            return False
+        result = await self._col.delete_one({"_id": oid})
+        return result.deleted_count > 0
+
+    async def delete(self, vehicle_id: str) -> bool:
+        try:
+            oid = ObjectId(vehicle_id)
+        except Exception:
+            return False
+        result = await self._col.delete_one({"_id": oid})
+        return result.deleted_count > 0
+
     async def restock(self, vehicle_id: str, quantity: int) -> bool:
         """Atomically increment quantity by the given amount.
 
