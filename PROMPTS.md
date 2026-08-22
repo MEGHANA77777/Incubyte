@@ -49,5 +49,71 @@ After implementation, run tests, linting, type checks, and verify the API starts
 
 ---
 
+---
+
+## Session 5 — Authentication (TDD)
+
+**Prompt**:
+# STAGE 3 — AUTHENTICATION
+
+Implement user registration and login using **TDD**.
+
+**Endpoints**
+
+* `POST /api/auth/register` → `201 Created`
+* `POST /api/auth/login` → `access_token`, `token_type`, safe user info
+
+**Architecture**
+`Route → Auth Service → User Repository → MongoDB`
+
+**Files**
+
+* `app/api/routes/auth.py`
+* `app/services/auth_service.py`
+* `app/repositories/user_repository.py`
+* `app/schemas/auth.py`
+* `app/schemas/user.py`
+* `tests/unit/test_auth_service.py`
+* `tests/integration/test_auth_api.py`
+
+### Registration — Tests First
+
+Cover:
+
+* successful registration
+* missing name
+* invalid email/password
+* duplicate email
+* password hashing
+* password hash never returned
+* default `USER` role
+* client cannot register as `ADMIN`
+
+### Login — Tests First
+
+Cover:
+
+* valid credentials
+* invalid/non-existent credentials
+* JWT generation
+* JWT contains user ID and role
+* JWT expiration
+* password never returned
+
+### Rules
+
+* No database queries or business logic in routes.
+* Use dependency injection.
+* Never expose `password_hash`.
+* Use meaningful HTTP status codes.
+* Follow existing project architecture.
+* Run `pytest -v` after implementation.
+* **Do not fabricate test results.**
+* Make Git commits showing the TDD progression: tests → implementation → fixes/refinement.
+
+**Response**: [Amazon Q Developer implemented authentication using TDD — wrote failing tests first for registration and login, then implemented the route, service, repository, and schema layers. Covered all specified cases including password hashing, JWT generation/expiration, role defaults, and security constraints. Ran `pytest -v`, fixed all issues, and committed in TDD progression order.]
+
+---
+
 > Raw conversation transcripts are preserved here as required by the assignment.
 > AI-generated suggestions were reviewed before each commit.
