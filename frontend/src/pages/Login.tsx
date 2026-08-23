@@ -27,7 +27,7 @@ const Login = () => {
 
       login(response.access_token);
 
-      navigate("/dashboard", { replace: true });
+      navigate("/vehicles", { replace: true });
     } catch (error: any) {
       console.error(error);
 
