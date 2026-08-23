@@ -1,15 +1,13 @@
 import { Outlet } from "react-router-dom";
 import { Navbar } from "../components/common/Navbar";
 
-const DashboardLayout = () => {
+const PublicLayout = () => {
   return (
     <div className="min-h-screen bg-slate-50">
       <Navbar />
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <Outlet />
-      </main>
+      <Outlet />
     </div>
   );
 };
 
-export default DashboardLayout;
+export default PublicLayout;

@@ -5,51 +5,115 @@ import {
   Routes,
 } from "react-router-dom";
 
+import "./App.css";
+
 import AdminRoute from "./components/auth/AdminRoute";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+
+import { ToastProvider } from "./context/ToastContext";
+
 import DashboardLayout from "./layouts/DashboardLayout";
+import PublicLayout from "./layouts/PublicLayout";
+
+import Admin from "./pages/Admin";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
-import Vehicles from "./pages/Vehicles";
 import Register from "./pages/Register";
-import Admin from "./pages/Admin";
-import { ToastProvider } from "./context/ToastContext";
+import VehicleDetail from "./pages/VehicleDetail";
+import Vehicles from "./pages/Vehicles";
 
 function App() {
   return (
-    <ToastProvider><BrowserRouter>
-      <Routes>
-        {/* Public routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/vehicles" element={<Vehicles />} />
+    <ToastProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* =====================================================
+              PUBLIC ROUTES
+              ===================================================== */}
 
-        {/* Protected routes */}
-        <Route element={<ProtectedRoute />}>
-          {/* Application layout */}
-          <Route element={<DashboardLayout />}>
-            <Route path="/dashboard" element={<Dashboard />} />
+          <Route element={<PublicLayout />}>
+            <Route
+              path="/vehicles"
+              element={<Vehicles />}
+            />
 
-            {/* Admin-only routes */}
-            <Route element={<AdminRoute />}>
-              <Route path="/admin" element={<Admin />} />
+            <Route
+              path="/vehicles/:id"
+              element={<VehicleDetail />}
+            />
+          </Route>
+
+          {/* =====================================================
+              AUTHENTICATION ROUTES
+              ===================================================== */}
+
+          <Route
+            path="/login"
+            element={<Login />}
+          />
+
+          <Route
+            path="/register"
+            element={<Register />}
+          />
+
+          {/* =====================================================
+              PROTECTED ROUTES
+              ===================================================== */}
+
+          <Route element={<ProtectedRoute />}>
+            <Route element={<DashboardLayout />}>
+
+              {/* Dashboard */}
+              <Route
+                path="/dashboard"
+                element={<Dashboard />}
+              />
+
+              {/* =================================================
+                  ADMIN-ONLY ROUTES
+                  ================================================= */}
+
+              <Route element={<AdminRoute />}>
+                <Route
+                  path="/admin"
+                  element={<Admin />}
+                />
+              </Route>
+
             </Route>
           </Route>
-        </Route>
 
-        {/* Default route */}
-        <Route
-          path="/"
-          element={<Navigate to="/vehicles" replace />}
-        />
+          {/* =====================================================
+              DEFAULT ROUTE
+              ===================================================== */}
 
-        {/* Unknown routes */}
-        <Route
-          path="*"
-          element={<Navigate to="/vehicles" replace />}
-        />
-      </Routes>
-    </BrowserRouter></ToastProvider>
+          <Route
+            path="/"
+            element={
+              <Navigate
+                to="/vehicles"
+                replace
+              />
+            }
+          />
+
+          {/* =====================================================
+              UNKNOWN ROUTES
+              ===================================================== */}
+
+          <Route
+            path="*"
+            element={
+              <Navigate
+                to="/vehicles"
+                replace
+              />
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </ToastProvider>
   );
 }
 

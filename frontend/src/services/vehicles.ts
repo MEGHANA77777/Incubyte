@@ -26,6 +26,11 @@ export const searchVehicles = async (
   return response.data;
 };
 
+export const getVehicle = async (id: string): Promise<Vehicle> => {
+  const response = await api.get<Vehicle>(`/api/vehicles/${id}`);
+  return response.data;
+};
+
 export const createVehicle = async (payload: VehiclePayload): Promise<Vehicle> => {
   const response = await api.post<Vehicle>("/api/vehicles", payload);
   return response.data;

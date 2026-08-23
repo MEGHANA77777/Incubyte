@@ -15,12 +15,12 @@ describe("AdminRoute", () => {
     });
   });
 
-  it("redirects non-admin users to dashboard", () => {
+  it("redirects non-admin users to vehicles", () => {
     useAuthStore.setState({
       token: "test-token",
       user: {
         id: "1",
-        role: "user",
+        role: "USER",
       },
       isAuthenticated: true,
       isLoading: false,
@@ -37,14 +37,14 @@ describe("AdminRoute", () => {
           </Route>
 
           <Route
-            path="/dashboard"
-            element={<div>Dashboard</div>}
+            path="/vehicles"
+            element={<div>Vehicles</div>}
           />
         </Routes>
       </MemoryRouter>
     );
 
-    expect(screen.getByText("Dashboard")).toBeInTheDocument();
+    expect(screen.getByText("Vehicles")).toBeInTheDocument();
   });
 
   it("allows admin users", () => {
@@ -52,7 +52,7 @@ describe("AdminRoute", () => {
       token: "test-token",
       user: {
         id: "1",
-        role: "admin",
+        role: "ADMIN",
       },
       isAuthenticated: true,
       isLoading: false,
