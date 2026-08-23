@@ -115,5 +115,14 @@ Cover:
 
 ---
 
-> Raw conversation transcripts are preserved here as required by the assignment.
-> AI-generated suggestions were reviewed before each commit.
+---
+
+
+
+## Session 6 — Frontend Catalog and Admin Management (Codex)
+
+**Raw prompt**: Build and integrate a modern React + Tailwind SPA for the Car Dealership Inventory System, including JWT authentication, vehicle catalog search, role-based admin operations, toast feedback, and Incubyte submission documentation.
+
+**Implementation summary**: Codex inspected the repository API contract, then implemented the responsive inventory catalog, typed Axios vehicle service, role-aware navigation and route guards, admin create/edit/restock/delete dialogs, and an in-app toast provider. The production build was run after the integration.
+
+**Review note**: The generated implementation was reviewed against the existing FastAPI routes, JWT roles (ADMIN / USER), and TypeScript build output before use.

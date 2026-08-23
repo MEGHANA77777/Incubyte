@@ -52,7 +52,12 @@ cd frontend && npm run test
 
 ## My AI Usage
 
-**Tools used**: Amazon Q Developer (CLI)
+**Tools used**: Amazon Q Developer (CLI), Codex
+
+**Codex usage**:
+- Implemented the responsive React/Tailwind vehicle catalog and typed FastAPI client integration.
+- Added role-gated admin inventory controls, reusable dialogs, and a lightweight toast system.
+- Ran the production frontend build and reviewed the changed files before commits.
 
 **How they were used**:
 - Architecture planning and technology stack recommendations

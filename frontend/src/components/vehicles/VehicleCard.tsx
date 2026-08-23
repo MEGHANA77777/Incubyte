@@ -3,27 +3,44 @@ import { stockStatus } from "../../types/vehicle";
 import { formatCurrency } from "../../utils/formatters";
 
 interface Props {
-  vehicle: Vehicle; isAdmin: boolean; busy?: boolean;
+  vehicle: Vehicle;
+  isAdmin: boolean;
+  busy?: boolean;
   onPurchase: (vehicle: Vehicle) => void;
-  onEdit?: (vehicle: Vehicle) => void; onDelete?: (vehicle: Vehicle) => void; onRestock?: (vehicle: Vehicle) => void;
+  onEdit?: (vehicle: Vehicle) => void;
+  onDelete?: (vehicle: Vehicle) => void;
+  onRestock?: (vehicle: Vehicle) => void;
 }
 
 export const VehicleCard = ({ vehicle, isAdmin, busy, onPurchase, onEdit, onDelete, onRestock }: Props) => {
   const status = stockStatus(vehicle.quantity);
-  const statusStyles = status === "In Stock" ? "bg-emerald-400/15 text-emerald-300" : status === "Low Stock" ? "bg-amber-400/15 text-amber-300" : "bg-red-400/15 text-red-300";
+  const statusStyles = status === "In Stock" ? "bg-emerald-50 text-emerald-700 ring-emerald-600/20" : status === "Low Stock" ? "bg-amber-50 text-amber-700 ring-amber-600/20" : "bg-red-50 text-red-700 ring-red-600/20";
+
   return (
-    <article className="group overflow-hidden rounded-2xl border border-white/10 bg-stone-900 shadow-xl shadow-black/10 transition hover:-translate-y-1 hover:border-amber-400/50">
-      <div className="relative h-36 bg-gradient-to-br from-stone-700 via-stone-800 to-stone-950 p-5">
-        <div className="absolute -right-5 bottom-0 text-8xl font-black italic text-white/5">A</div>
-        <span className={"rounded-full px-2.5 py-1 text-xs font-bold " + statusStyles}>{status}</span>
-        <p className="mt-7 text-xs font-semibold uppercase tracking-[0.22em] text-stone-400">{vehicle.category}</p>
+    <article className="rounded-xl border border-slate-200 bg-white p-6 shadow-card transition-shadow hover:shadow-md">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-xs font-medium uppercase tracking-wider text-slate-500">{vehicle.make}</p>
+          <h3 className="mt-1 text-2xl font-bold tracking-tight text-slate-950">{vehicle.model}</h3>
+          <p className="mt-1 text-sm text-slate-500">{vehicle.category}</p>
+        </div>
+        <span className={"inline-flex shrink-0 rounded-md px-2.5 py-1 text-xs font-semibold ring-1 ring-inset " + statusStyles}>{status}</span>
       </div>
-      <div className="p-5">
-        <h3 className="text-xl font-bold text-white">{vehicle.make} {vehicle.model}</h3>
-        <div className="mt-4 flex items-end justify-between"><div><p className="text-xs text-stone-500">Drive-away price</p><p className="text-lg font-bold text-amber-300">{formatCurrency(vehicle.price)}</p></div><p className="text-right text-sm text-stone-400"><span className="block text-lg font-bold text-white">{vehicle.quantity}</span>in stock</p></div>
-        <button disabled={vehicle.quantity === 0 || busy} onClick={() => onPurchase(vehicle)} className="mt-5 w-full rounded-xl bg-amber-400 px-4 py-2.5 text-sm font-bold text-stone-950 transition hover:bg-amber-300 disabled:cursor-not-allowed disabled:bg-stone-700 disabled:text-stone-400">{busy ? "Processing…" : vehicle.quantity === 0 ? "Currently unavailable" : "Purchase vehicle"}</button>
-        {isAdmin && <div className="mt-3 grid grid-cols-3 gap-2 text-xs"><button onClick={() => onEdit?.(vehicle)} className="rounded-lg border border-white/10 py-2 text-stone-300 hover:border-white/30">Edit</button><button onClick={() => onRestock?.(vehicle)} className="rounded-lg border border-white/10 py-2 text-stone-300 hover:border-white/30">Restock</button><button onClick={() => onDelete?.(vehicle)} className="rounded-lg border border-red-400/30 py-2 text-red-300 hover:bg-red-400/10">Delete</button></div>}
-      </div>
+
+      <dl className="mt-7 grid grid-cols-2 border-y border-slate-100 py-4">
+        <div><dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Price</dt><dd className="mt-1 text-lg font-semibold text-slate-900">{formatCurrency(vehicle.price)}</dd></div>
+        <div className="border-l border-slate-100 pl-5"><dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Available</dt><dd className="mt-1 text-lg font-semibold text-slate-900">{vehicle.quantity} <span className="text-sm font-medium text-slate-500">units</span></dd></div>
+      </dl>
+
+      <button disabled={vehicle.quantity === 0 || busy} onClick={() => onPurchase(vehicle)} className="mt-5 w-full rounded-lg bg-brand px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-300">
+        {busy ? "Processing purchase…" : vehicle.quantity === 0 ? "Out of stock" : "Purchase vehicle"}
+      </button>
+
+      {isAdmin && <div className="mt-4 flex items-center justify-end gap-1 border-t border-slate-100 pt-4 text-xs font-medium">
+        <button onClick={() => onEdit?.(vehicle)} className="rounded-md px-2.5 py-1.5 text-slate-500 hover:bg-slate-100 hover:text-brand">Edit</button>
+        <button onClick={() => onRestock?.(vehicle)} className="rounded-md px-2.5 py-1.5 text-slate-500 hover:bg-slate-100 hover:text-brand">Restock</button>
+        <button onClick={() => onDelete?.(vehicle)} className="rounded-md px-2.5 py-1.5 text-slate-500 hover:bg-red-50 hover:text-red-700">Delete</button>
+      </div>}
     </article>
   );
 };

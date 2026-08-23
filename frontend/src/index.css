@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  body { @apply bg-stone-950 text-stone-100 antialiased; }
+  html { @apply bg-slate-50; }
+  body { @apply bg-slate-50 font-sans text-slate-700 antialiased; }
   button, input, select { font: inherit; }
 }

@@ -13,10 +13,11 @@ import Login from "./pages/Login";
 import Vehicles from "./pages/Vehicles";
 import Register from "./pages/Register";
 import Admin from "./pages/Admin";
+import { ToastProvider } from "./context/ToastContext";
 
 function App() {
   return (
-    <BrowserRouter>
+    <ToastProvider><BrowserRouter>
       <Routes>
         {/* Public routes */}
         <Route path="/login" element={<Login />} />
@@ -48,7 +49,7 @@ function App() {
           element={<Navigate to="/vehicles" replace />}
         />
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter></ToastProvider>
   );
 }
 

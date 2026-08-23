@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 
 import { login as loginApi } from "../services/auth";
 import { useAuthStore } from "../store/authStore";
+import { useToast } from "../context/ToastContext";
 
 const Login = () => {
   const navigate = useNavigate();
   const login = useAuthStore((state) => state.login);
+  const { showToast } = useToast();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,6 +29,8 @@ const Login = () => {
 
       login(response.access_token);
 
+      showToast("Welcome back. You are signed in.", "success");
+
       navigate("/vehicles", { replace: true });
     } catch (error: any) {
       console.error(error);
@@ -36,6 +40,7 @@ const Login = () => {
         "Login failed. Please check your credentials.";
 
       setError(message);
+      showToast(message, "error");
     } finally {
       setLoading(false);
     }
